@@ -15,6 +15,7 @@ pipeline {
 				'Staging',
 				'production'
 			],
+			
 			description: 'select env to deploy...'
 		)
 	}
@@ -32,7 +33,8 @@ pipeline {
 
 		stage ("check npm & node version") {
 			steps {
-				sh '''
+			sh '''
+			nvm install v16.13.1
         		npm -v
         		node -v
       			'''
