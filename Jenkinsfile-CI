@@ -3,8 +3,8 @@ pipeline {
 
 	environment {
 		NPM_REGISTRY_VIRTUAL = 'https:....' 
-		NPM_REGISTRY_DEV = 'https:....'     
-                NPM_TOKEN = 'bbb'
+		NPM_REGISTRY_DEV = 'http://15.185.219.151:8081/artifactory/example-repo-local/Michal_interview'     
+                NPM_TOKEN = 'AP42jN95K1FhNAQ1c5rZX9QongF'
 	}
 
 	parameters {
@@ -33,6 +33,8 @@ pipeline {
 		stage ("check npm & node version") {
 			steps {
 			sh '''
+			which nvm
+			which npm
 			npm -v
         		node -v
       			'''
@@ -50,6 +52,13 @@ pipeline {
 			steps {
 				sh  '''
 				npm run test				
+				'''
+			}
+		}
+		stage ("Publish to artifactory") {
+			steps {
+				sh  '''
+				npm publish				
 				'''
 			}
 		}
