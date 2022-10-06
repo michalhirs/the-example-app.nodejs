@@ -4,7 +4,7 @@ pipeline {
 	environment {
 		NPM_REGISTRY_VIRTUAL = 'https:....' 
 		NPM_REGISTRY_DEV = 'https:....'     
-                NPM_TOKEN = ''
+                NPM_TOKEN = 'bbb'
 	}
 
 	parameters {
