@@ -36,7 +36,7 @@ pipeline {
 			sh '''
 			which npm
 			which node
-			npm -v
+			${NPM_VER}/npm -v
         		node -v
       			'''
 			}
