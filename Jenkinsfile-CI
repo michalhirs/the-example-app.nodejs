@@ -33,8 +33,7 @@ pipeline {
 		stage ("check npm & node version") {
 			steps {
 			sh '''
-			nvm use 0.39.1
-        		npm -v
+			npm -v
         		node -v
       			'''
 			}
