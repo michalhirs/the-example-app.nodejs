@@ -33,7 +33,7 @@ pipeline {
 		stage ("check npm & node version") {
 			steps {
 			sh '''
-			. ~/.nvm/nvm.sh
+			. /home/ubuntu/install_nvm.sh
         		npm -v
         		node -v
       			'''
