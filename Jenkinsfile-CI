@@ -14,8 +14,7 @@ pipeline {
 				'Dev',
 				'Staging',
 				'production'
-			],
-			
+			],			
 			description: 'select env to deploy...'
 		)
 	}
@@ -37,6 +36,21 @@ pipeline {
         		npm -v
         		node -v
       			'''
+			}
+		}
+		stage ("Build npm") {
+			steps {
+				sh  '''
+				npm install
+				npm run build				
+				'''
+			}
+		}
+		stage ("Test npm") {
+			steps {
+				sh  '''
+				npm run test				
+				'''
 			}
 		}
 	}
