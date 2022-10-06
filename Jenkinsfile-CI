@@ -1,0 +1,43 @@
+pipeline {
+	agent any
+
+	environment {
+		NPM_REGISTRY_VIRTUAL = 'https:....' 
+		NPM_REGISTRY_DEV = 'https:....'     
+    NPM_TOKEN = ''
+	}
+
+	parameters {
+			choice (
+			name: 'DEPLOY_ENV',
+			choices: [
+				'Dev',
+				'Staging',
+				'production'
+			],
+			defaultValue: 'Dev'
+			description: 'select env to deploy...'
+		)
+	}
+
+	stages {
+		stage ("checking vars & params") {
+			steps {
+				echo "checking vars & params"
+				echo "---> NPM_REGISTRY_VIRTUAL is: ${NPM_REGISTRY_VIRTUAL}"
+				echo "---> NPM_REGISTRY_DEV is: ${NPM_REGISTRY_DEV}"
+				echo "---> NPM_TOKEN is: ${NPM_TOKEN}"
+				echo "---> DEPLOY_ENV is: ${DEPLOY_ENV}"				
+			}
+		}
+
+		stage ("check npm & node version") {
+			steps {
+				sh '''
+        		npm -v
+        		node -v
+      			'''
+			}
+		}
+	}
+}
