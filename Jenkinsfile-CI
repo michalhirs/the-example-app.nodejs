@@ -51,7 +51,7 @@ pipeline {
 		stage ("Test npm") {
 			steps {
 				sh  '''
-				npm run test				
+				npm run test:michal				
 				'''
 			}
 		}
@@ -71,5 +71,19 @@ pipeline {
 				'''
 			}
 		}*/
+		post {
+                always {
+                  publishHTML target: [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'client/e2e/reports',
+                    reportFiles: 'index.html',
+                    reportName: 'HTML Report',
+                    reportTitles: 'Reports'
+                  ]
+                  junit "client/e2e/junit-reports/*.xml"
+                }
+              }
 	}
 }
