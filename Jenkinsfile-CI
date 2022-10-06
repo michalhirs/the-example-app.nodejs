@@ -18,6 +18,7 @@ pipeline {
 			],			
 			description: 'select env to deploy...'
 		)
+		string(name: 'PACKAGE_VERSION', defaultValue: 'latest', description: 'The package version to install...')
 	}
 
 	stages {
@@ -29,6 +30,7 @@ pipeline {
 				echo "---> NPM_TOKEN is: ${NPM_TOKEN}"
 				echo "---> DEPLOY_ENV is: ${DEPLOY_ENV}"
 				echo "---> IMAGE_NAME is: ${IMAGE_NAME}"
+				echo "---> PACKAGE_VERSION is: ${PACKAGE_VERSION}"
 			}
 		}
 
@@ -73,7 +75,7 @@ pipeline {
 			steps {
 				sh  '''
 				ssh -i /var/lib/jenkins/.ssh/interview_b.pem ubuntu@157.175.202.129
-				npm install --registry ${NPM_REGISTRY_DEV} ${IMAGE_NAME}@latest
+				npm install --registry ${NPM_REGISTRY_DEV} ${IMAGE_NAME}@${PACKAGE_VERSION}
 				npm start:dev				
 				'''
 			}
