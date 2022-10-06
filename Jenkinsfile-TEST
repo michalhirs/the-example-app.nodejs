@@ -1,1 +1,76 @@
-gg
+pipeline {
+	agent any
+
+	environment {
+		NPM_REGISTRY_VIRTUAL = 'https:....' 
+		NPM_REGISTRY_DEV = 'http://15.185.219.151:8081/artifactory/example-repo-local/Michal_interview'     
+    NPM_TOKEN = 'AP42jN95K1FhNAQ1c5rZX9QongF'
+		PATH = "~/.nvm/versions/node/v8.17.0/bin/:${env.PATH}"		
+	}
+
+	parameters {
+			choice (
+			name: 'DEPLOY_ENV',
+			choices: [
+				'Dev',
+				'Staging',
+				'production'
+			],			
+			description: 'select env to deploy...'
+		)
+	}
+
+	stages {
+		stage ("checking vars & params") {
+			steps {
+				echo "checking vars & params"
+				echo "---> NPM_REGISTRY_VIRTUAL is: ${NPM_REGISTRY_VIRTUAL}"
+				echo "---> NPM_REGISTRY_DEV is: ${NPM_REGISTRY_DEV}"
+				echo "---> NPM_TOKEN is: ${NPM_TOKEN}"
+				echo "---> DEPLOY_ENV is: ${DEPLOY_ENV}"				
+			}
+		}
+
+		stage ("check npm & node version") {
+			steps {
+			sh '''			
+			npm -v
+        		node -v
+      			'''
+			}
+		}
+		stage ("Build npm") {
+			steps {
+				sh  '''
+				pwd
+				ls -ltr				
+				npm install							
+				'''
+			}
+		}
+		stage ("Test npm") {
+			steps {
+				sh  '''
+				npm run test:michal				
+				'''
+			}
+		}
+		stage ("Deploy to dev") {
+			steps {
+				sh  '''
+				npm start:dev				
+				'''
+			}
+		}
+		/*stage ("Publish to artifactory") {
+			steps {
+				sh  '''
+        npm version patch -m "upgrade to %s"
+				npm config set registry ${NPM_REGISTRY_DEV}
+				npm set _auth=${NPM_TOKEN}
+				npm publish				
+				'''
+			}
+		}*/       
+	}
+}
