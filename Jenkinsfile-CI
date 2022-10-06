@@ -42,6 +42,8 @@ pipeline {
 		stage ("Build npm") {
 			steps {
 				sh  '''
+				pwd
+				ls -ltr
 				cd the-example-app.nodejs
 				npm install							
 				'''
