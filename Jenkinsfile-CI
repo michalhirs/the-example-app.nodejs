@@ -43,8 +43,7 @@ pipeline {
 			steps {
 				sh  '''
 				pwd
-				ls -ltr
-				cd the-example-app.nodejs
+				ls -ltr				
 				npm install							
 				'''
 			}
@@ -52,7 +51,7 @@ pipeline {
 		stage ("Test npm") {
 			steps {
 				sh  '''
-				npm run test:e2e:dev				
+				npm run start:dev				
 				'''
 			}
 		}
