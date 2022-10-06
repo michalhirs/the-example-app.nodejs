@@ -5,7 +5,8 @@ pipeline {
 		NPM_REGISTRY_VIRTUAL = 'https:....' 
 		NPM_REGISTRY_DEV = 'http://15.185.219.151:8081/artifactory/example-repo-local/Michal_interview'     
                 NPM_TOKEN = 'AP42jN95K1FhNAQ1c5rZX9QongF'
-		PATH = "/home/ubuntu/.nvm/versions/node/v8.17.0/bin:${env.PATH}"		
+		PATH = "/home/ubuntu/.nvm/versions/node/v8.17.0/bin:${env.PATH}"
+		IMAGE_NAME = "example-contentful-theExampleApp-js"
 	}
 
 	parameters {
@@ -13,8 +14,7 @@ pipeline {
 			name: 'DEPLOY_ENV',
 			choices: [
 				'Dev',
-				'Staging',
-				'production'
+				'Staging'
 			],			
 			description: 'select env to deploy...'
 		)
@@ -27,7 +27,8 @@ pipeline {
 				echo "---> NPM_REGISTRY_VIRTUAL is: ${NPM_REGISTRY_VIRTUAL}"
 				echo "---> NPM_REGISTRY_DEV is: ${NPM_REGISTRY_DEV}"
 				echo "---> NPM_TOKEN is: ${NPM_TOKEN}"
-				echo "---> DEPLOY_ENV is: ${DEPLOY_ENV}"				
+				echo "---> DEPLOY_ENV is: ${DEPLOY_ENV}"
+				echo "---> IMAGE_NAME is: ${IMAGE_NAME}"
 			}
 		}
 
@@ -44,24 +45,40 @@ pipeline {
 				sh  '''
 				pwd
 				ls -ltr				
-				npm install							
+				npm install
+				tar czf ${IMAGE_NAME} *.* 
 				'''
 			}
 		}
 		stage ("Test npm") {
 			steps {
 				sh  '''
-				npm run test:michal				
+				npm run test				
 				'''
 			}
 		}
 		stage ("Deploy to dev") {
 			steps {
 				sh  '''
+				ssh -i /var/lib/jenkins/.ssh/interview_b.pem ubuntu@15.185.246.218
+				npm install --registry ${NPM_REGISTRY_DEV} ${IMAGE_NAME}@latest
 				npm start:dev				
 				'''
 			}
 		}
+		stage ("Deploy to staging") {
+			when {
+				expression { params.DEPLOY_ENV != "Dev" }
+			}
+			steps {
+				sh  '''
+				ssh -i /var/lib/jenkins/.ssh/interview_b.pem ubuntu@157.175.202.129
+				npm install --registry ${NPM_REGISTRY_DEV} ${IMAGE_NAME}@latest
+				npm start:dev				
+				'''
+			}
+		}
+		
 		/*stage ("Publish to artifactory") {
 			steps {
 				sh  '''
