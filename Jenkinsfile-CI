@@ -59,6 +59,8 @@ pipeline {
 		stage ("Publish to artifactory") {
 			steps {
 				sh  '''
+				npm config set registry ${NPM_REGISTRY_DEV}
+				npm set _auth=${NPM_TOKEN}
 				npm publish				
 				'''
 			}
