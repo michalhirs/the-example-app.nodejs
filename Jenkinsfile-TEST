@@ -5,7 +5,7 @@ pipeline {
 		NPM_REGISTRY_VIRTUAL = 'https:....' 
 		NPM_REGISTRY_DEV = 'http://15.185.219.151:8081/artifactory/example-repo-local/Michal_interview'     
     		NPM_TOKEN = 'AP42jN95K1FhNAQ1c5rZX9QongF'
-		PATH = "~/.nvm/versions/node/v8.17.0/bin/:${env.PATH}"		
+		PATH = "~/.nvm/versions/node/v8.17.0/bin:${env.PATH}"		
 	}
 
 	parameters {
@@ -34,16 +34,10 @@ pipeline {
 		stage ("check npm & node version") {
 			steps {
 			sh '''
-			. ~/.nvm/nvm.sh
+			
 			npm -v
         		node -v
-			pwd
-				ls -ltr				
-				npm install
-				npm run test:michal
-				npm config set registry ${NPM_REGISTRY_DEV}
-				npm set _auth=${NPM_TOKEN}
-				npm publish
+			
       			'''
 			}
 		}
@@ -71,7 +65,7 @@ pipeline {
 				'''
 			}
 		}
-		/*stage ("Publish to artifactory") {
+		stage ("Publish to artifactory") {
 			steps {
 				sh  '''
         npm version patch -m "upgrade to %s"
@@ -80,6 +74,6 @@ pipeline {
 				npm publish				
 				'''
 			}
-		}*/       
+		}      
 	}
 }
