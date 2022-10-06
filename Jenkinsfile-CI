@@ -51,11 +51,18 @@ pipeline {
 		stage ("Test npm") {
 			steps {
 				sh  '''
-				npm run start:dev				
+				npm run test				
 				'''
 			}
 		}
-		stage ("Publish to artifactory") {
+		stage ("Deploy to dev") {
+			steps {
+				sh  '''
+				npm start:dev				
+				'''
+			}
+		}
+		/*stage ("Publish to artifactory") {
 			steps {
 				sh  '''
 				npm config set registry ${NPM_REGISTRY_DEV}
@@ -63,6 +70,6 @@ pipeline {
 				npm publish				
 				'''
 			}
-		}
+		}*/
 	}
 }
