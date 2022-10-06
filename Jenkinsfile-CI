@@ -35,8 +35,7 @@ pipeline {
 		stage ("check npm & node version") {
 			steps {
 			sh '''
-			which npm
-			which node
+			
 			npm -v
         		node -v
       			'''
