@@ -5,7 +5,7 @@ pipeline {
 		NPM_REGISTRY_VIRTUAL = 'https:....' 
 		NPM_REGISTRY_DEV = 'http://15.185.219.151:8081/artifactory/example-repo-local/Michal_interview'     
                 NPM_TOKEN = 'AP42jN95K1FhNAQ1c5rZX9QongF'
-		PATH = "/home/ubuntu/.nvm/versions/node/v16.13.1/bin:${env.PATH}"		
+		PATH = "/home/ubuntu/.nvm/versions/node/v8.17.0/bin:${env.PATH}"		
 	}
 
 	parameters {
