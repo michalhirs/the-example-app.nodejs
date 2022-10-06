@@ -15,7 +15,6 @@ pipeline {
 				'Staging',
 				'production'
 			],
-			defaultValue: 'Dev',
 			description: 'select env to deploy...'
 		)
 	}
